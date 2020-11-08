@@ -1,7 +1,6 @@
 package com.tim;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.tim.websocket.KrakenWebSocketHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.socket.TextMessage;
 

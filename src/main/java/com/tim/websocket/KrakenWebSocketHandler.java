@@ -1,15 +1,16 @@
-package com.tim;
+package com.tim.websocket;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tim.TickerUpdate;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-public class KrakenWebSocketHandler implements Exchange {
+public class KrakenWebSocketHandler implements WebSocketHandler {
 
   public static final String MESSAGE =
       "{\n"
