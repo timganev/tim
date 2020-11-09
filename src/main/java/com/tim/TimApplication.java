@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
+//import com.tim.websocket.Kraken;
+
 @SpringBootApplication
 public class TimApplication implements CommandLineRunner {
 
@@ -24,7 +26,7 @@ public class TimApplication implements CommandLineRunner {
   public void run(String... args) throws Exception {
     WebSocketClient client = new StandardWebSocketClient();
 //    client.doHandshake(new Kraken(), KRAKEN_STREAM_URL);
-		client.doHandshake(new Bitfinex(), BITFINEX_STREAM_URL);
+    client.doHandshake(new Bitfinex(), BITFINEX_STREAM_URL);
 
     new Scanner(System.in).nextLine(); // Don't close immediately.
   }

@@ -8,8 +8,15 @@ import org.springframework.web.socket.WebSocketHandler;
 
 public interface Exchange extends WebSocketHandler {
 
-  public static TreeMap<Double, Double> classAskMap = new TreeMap<>(Comparator.reverseOrder());
-  public static TreeMap<Double, Double> classBidMap = new TreeMap<>(Comparator.reverseOrder());
+  TreeMap<Double, Double> askAgreggate = new TreeMap<>(Comparator.reverseOrder());
+  TreeMap<Double, Double> bidAgreggate = new TreeMap<>(Comparator.reverseOrder());
+
+  HashMap<Double, Double> askKraken = new HashMap<>();
+  HashMap<Double, Double> bidKraken = new HashMap<>();
+
+  HashMap<Double, Double> askBitfinex = new HashMap<>();
+  HashMap<Double, Double> bidBitfinex = new HashMap<>();
+
   DecimalFormat df = new DecimalFormat("0.0000000000");
 
 }
