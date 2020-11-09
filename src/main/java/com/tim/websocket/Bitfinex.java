@@ -45,24 +45,24 @@ public class Bitfinex implements Exchange {
 
           if (amount > 0) {
             bidBitfinex.put(price, amount);
-            bidAgreggate.put(price, amount);
+            bidAggregate.put(price, amount);
           } else {
             askBitfinex.put(price, amount * -1);
-            askAgreggate.put(price, amount * -1);
+            askAggregate.put(price, amount * -1);
           }
 
         } else {
           askBitfinex.remove(price);
           bidBitfinex.remove(price);
 
-          askAgreggate.remove(price);
-          if(askKraken.containsKey(price)){
-            askAgreggate.put(price, askKraken.get(price));
+          askAggregate.remove(price);
+          if (askKraken.containsKey(price)) {
+            askAggregate.put(price, askKraken.get(price));
           }
 
-          bidAgreggate.remove(price);
-          if(bidKraken.containsKey(price)){
-            bidAgreggate.put(price, bidKraken.get(price));
+          bidAggregate.remove(price);
+          if (bidKraken.containsKey(price)) {
+            bidAggregate.put(price, bidKraken.get(price));
           }
         }
 
@@ -75,35 +75,59 @@ public class Bitfinex implements Exchange {
   }
 
   public void printBook() {
-    System.out.println();
-    System.out.println("Order book");
-    System.out.println("asks:");
-    askAgreggate.entrySet().forEach(entry -> {
-      System.out.println(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
-    });
-    if (askAgreggate.size() > 0) {
-      System.out.println();
-      System.out.println(
-          "best ask: " + df.format(askAgreggate.lastEntry().getKey()) + "  |  " + df
-              .format(askAgreggate.lastEntry()
-                  .getValue()));
-    }
+    StringBuilder str = new StringBuilder();
+    str.append("\n");
 
-    if (bidAgreggate.size() > 0) {
-      System.out.println(
-          "best bid: " + df.format(bidAgreggate.firstEntry().getKey()) + "  |  " + df
-              .format(bidAgreggate.firstEntry()
-                  .getValue()));
-    }
-    System.out.println();
-    System.out.println("bids:");
-    bidAgreggate.entrySet().forEach(entry -> {
-      System.out.println(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
+    str.append("Order book\n");
+    str.append("asks:\n");
+
+    askAggregate.entrySet().forEach(entry -> {
+      str.append(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
+      if (askKraken.containsKey(entry.getKey()) && askBitfinex.containsKey(entry.getKey())) {
+        str.append("  Aggregate\n");
+      } else if (askKraken.containsKey(entry.getKey())) {
+        str.append("  Kraken\n");
+      } else {
+        str.append("  Bitfinex\n");
+      }
+
     });
-    System.out.println("=================================");
-    System.out.println("Aggregate asks: " + askAgreggate.size());
-    System.out.println("Aggregate bids: " + bidAgreggate.size());
-    System.out.println("=================================");
+
+    if (bidAggregate.size() > 0 && askAggregate.size() > 0) {
+      str.append("\n");
+      str.append("best ask: " + df.format(askAggregate.lastEntry().getKey()) + "  |  " + df
+          .format(askAggregate.lastEntry().getValue()) + "\n");
+
+      // Check for Arbitrage
+      if (askAggregate.lastEntry().getKey() > bidAggregate.firstEntry().getKey()) {
+        str.append("Arbitrage is not possible at the moment\n");
+      } else {
+        str.append("Arbitrage Opportunity !!!\n");
+      }
+      str.append("best bid: " + df.format(bidAggregate.firstEntry().getKey()) + "  |  " + df
+          .format(bidAggregate.firstEntry()
+              .getValue()) + "\n");
+      str.append("\n");
+    }
+    str.append("bids:\n");
+
+    bidAggregate.entrySet().forEach(entry -> {
+      str.append(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
+      if (bidKraken.containsKey(entry.getKey()) && bidBitfinex.containsKey(entry.getKey())) {
+        str.append("  Aggregate\n");
+      } else if (bidKraken.containsKey(entry.getKey())) {
+        str.append("  Kraken\n");
+      } else {
+        str.append("  Bitfinex\n");
+      }
+
+    });
+    str.append("=================================\n");
+    str.append("Total asks: " + askAggregate.size() + "\n");
+    str.append("Total bids: " + bidAggregate.size() + "\n");
+    str.append("=================================\n");
+
+    System.out.println(str.toString());
   }
 
 

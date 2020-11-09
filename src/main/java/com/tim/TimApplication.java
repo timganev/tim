@@ -25,7 +25,7 @@ public class TimApplication implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     WebSocketClient client = new StandardWebSocketClient();
-//    client.doHandshake(new Kraken(), KRAKEN_STREAM_URL);
+    client.doHandshake(new Kraken(), KRAKEN_STREAM_URL);
     client.doHandshake(new Bitfinex(), BITFINEX_STREAM_URL);
 
     new Scanner(System.in).nextLine(); // Don't close immediately.

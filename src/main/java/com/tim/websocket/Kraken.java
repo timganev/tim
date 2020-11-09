@@ -40,10 +40,14 @@ public class Kraken implements Exchange {
           Double amount = order.get(1).asDouble();
           if (amount > 0) {
             askKraken.put(price, amount);
-            askAgreggate.put(price, amount);
+            askAggregate.put(price, amount);
           } else {
             askKraken.remove(price);
-            askAgreggate.remove(price);
+
+            askAggregate.remove(price);
+            if(askBitfinex.containsKey(price)){
+              askAggregate.put(price, askBitfinex.get(price));
+            }
           }
         });
 
@@ -56,17 +60,19 @@ public class Kraken implements Exchange {
           Double amount = order.get(1).asDouble();
           if (amount > 0) {
             bidKraken.put(price, amount);
-            bidAgreggate.put(price, amount);
+            bidAggregate.put(price, amount);
           } else {
             bidKraken.remove(price);
-            bidAgreggate.remove(price);
+
+            bidAggregate.remove(price);
+            if(bidBitfinex.containsKey(price)){
+              bidAggregate.put(price, bidBitfinex.get(price));
+            }
           }
         });
 
       }
-      printBook();
-      //        System.out.println("ASK: " + askKraken.size());
-      //        System.out.println("BID: " + bidKraken.size());
+//      printBook();
     }
   }
 
@@ -74,31 +80,31 @@ public class Kraken implements Exchange {
     System.out.println();
     System.out.println("Order book");
     System.out.println("asks:");
-    askAgreggate.entrySet().forEach(entry -> {
+    askAggregate.entrySet().forEach(entry -> {
       System.out.println(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
     });
-    if (askAgreggate.size() > 0) {
+    if (askAggregate.size() > 0) {
       System.out.println();
       System.out.println(
-          "best ask: " + df.format(askAgreggate.lastEntry().getKey()) + "  |  " + df
-              .format(askAgreggate.lastEntry()
+          "best ask: " + df.format(askAggregate.lastEntry().getKey()) + "  |  " + df
+              .format(askAggregate.lastEntry()
                   .getValue()));
     }
 
-    if (bidAgreggate.size() > 0) {
+    if (bidAggregate.size() > 0) {
       System.out.println(
-          "best bid: " + df.format(bidAgreggate.firstEntry().getKey()) + "  |  " + df
-              .format(bidAgreggate.firstEntry()
+          "best bid: " + df.format(bidAggregate.firstEntry().getKey()) + "  |  " + df
+              .format(bidAggregate.firstEntry()
                   .getValue()));
     }
     System.out.println();
     System.out.println("bids:");
-    bidAgreggate.entrySet().forEach(entry -> {
+    bidAggregate.entrySet().forEach(entry -> {
       System.out.println(df.format(entry.getKey()) + "  |  " + df.format(entry.getValue()));
     });
     System.out.println("=================================");
-    System.out.println("Aggregate asks: " + askAgreggate.size());
-    System.out.println("Aggregate bids: " + bidAgreggate.size());
+    System.out.println("Aggregate asks: " + askAggregate.size());
+    System.out.println("Aggregate bids: " + bidAggregate.size());
     System.out.println("=================================");
   }
 
