@@ -3,6 +3,7 @@ package com.tim.websocket;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import lombok.Data;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -11,21 +12,13 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 @Data
-public class KrakenWebSocketHandler implements WebSocketHandler {
+public class Kraken implements WebSocketHandler {
 
-  public static final String MESSAGE =
-      "{\n"
-          + "  \"event\": \"subscribe\",\n"
-          + "  \"pair\": [\n"
-          + "    \"XBT/USD\"\n"
-          + "  ],\n"
-          + "  \"subscription\": {\n"
-          + "    \"name\": \"book\"\n"
-          + "  }\n"
-          + "}";
+  HashMap<Double, HashMap<Long, Double>> askMap = new HashMap<>();
+  HashMap<Double, HashMap<Long, Double>> bidMap = new HashMap<>();
 
+  public static final String MESSAGE = "{ \"event\": \"subscribe\",  \"pair\": [\"XBT/USD\"],  \"subscription\": {\"name\": \"book\"} }";
 
-  private static DecimalFormat df = new DecimalFormat("0.000000000");
   ObjectMapper objectMapper = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
