@@ -1,15 +1,16 @@
 package com.tim.websocket;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tim.TickerUpdate;
+import java.text.DecimalFormat;
+import lombok.Data;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+@Data
 public class KrakenWebSocketHandler implements WebSocketHandler {
 
   public static final String MESSAGE =
@@ -24,7 +25,7 @@ public class KrakenWebSocketHandler implements WebSocketHandler {
           + "}";
 
 
-
+  private static DecimalFormat df = new DecimalFormat("0.000000000");
   ObjectMapper objectMapper = new ObjectMapper()
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -39,11 +40,11 @@ public class KrakenWebSocketHandler implements WebSocketHandler {
       throws Exception {
     System.out.println(message.getPayload());
 
-    JsonNode root = objectMapper.readTree(message.getPayload().toString());
-    if (root.isArray()) {
-      TickerUpdate update = objectMapper.treeToValue(root.get(1), TickerUpdate.class);
-      System.out.println(update);
-    }
+//    JsonNode root = objectMapper.readTree(message.getPayload().toString());
+//    if (root.isArray()) {
+//      TickerUpdate update = objectMapper.treeToValue(root.get(1), TickerUpdate.class);
+//      System.out.println(update);
+//    }
   }
 
   @Override

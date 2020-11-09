@@ -1,4 +1,4 @@
-package com.tim;
+package com.tim.old;
 
 public class TickerUpdateMessage {
 

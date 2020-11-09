@@ -1,17 +1,12 @@
 package com.tim;
 
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
+import java.util.HashMap;
+import lombok.Data;
+
+@Data
 public class OrderBook {
-  ConcurrentSkipListMap askBook = new ConcurrentSkipListMap<Float, Integer>(new TreeMap());
-  ConcurrentSkipListMap bidBook = new ConcurrentSkipListMap<Float, Integer>(new TreeMap());
 
-  public void update(TickerUpdate update) {
-    if (update.getA() != null) {
-      for (String[] ticker : update.getA()) {
-        askBook.put(Float.valueOf(ticker[0]), Integer.valueOf(ticker[0]));
-      }
-    }
-  }
+  public static HashMap<Double, Double> mapOrderBook = new HashMap<>();
+
 }
