@@ -40,7 +40,15 @@ public class Kraken implements Exchange {
           Double amount = order.get(1).asDouble();
           if (amount > 0) {
             askKraken.put(price, amount);
-            askAggregate.put(price, amount);
+
+            //BID Aggregate
+            if(askBitfinex.containsKey(price)){
+              askAggregate.put(price, (askBitfinex.get(price)+askKraken.get(price)));
+            } else {
+              askAggregate.put(price, amount);
+            }
+
+
           } else {
             askKraken.remove(price);
 
@@ -60,7 +68,14 @@ public class Kraken implements Exchange {
           Double amount = order.get(1).asDouble();
           if (amount > 0) {
             bidKraken.put(price, amount);
-            bidAggregate.put(price, amount);
+
+            //ASK Aggregate
+            if(bidBitfinex.containsKey(price)){
+              bidAggregate.put(price, (bidBitfinex.get(price)+bidKraken.get(price)));
+            } else {
+              bidAggregate.put(price, amount);
+            }
+
           } else {
             bidKraken.remove(price);
 

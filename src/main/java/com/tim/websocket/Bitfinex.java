@@ -43,12 +43,28 @@ public class Bitfinex implements Exchange {
 
         if (count > 0) {
 
+          //BID
           if (amount > 0) {
             bidBitfinex.put(price, amount);
-            bidAggregate.put(price, amount);
+
+            //BID Aggregate
+            if (bidKraken.containsKey(price)) {
+              bidAggregate.put(price, (bidBitfinex.get(price) + bidKraken.get(price)));
+            } else {
+              bidAggregate.put(price, amount);
+            }
+
+            //ASK
           } else {
+            // reverse negative sign
             askBitfinex.put(price, amount * -1);
-            askAggregate.put(price, amount * -1);
+
+            //ASK Aggregate
+            if (askKraken.containsKey(price)) {
+              askAggregate.put(price, (askBitfinex.get(price) + askKraken.get(price)));
+            } else {
+              askAggregate.put(price, askBitfinex.get(price));
+            }
           }
 
         } else {
