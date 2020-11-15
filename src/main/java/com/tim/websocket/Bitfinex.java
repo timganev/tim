@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tim.service.OrderBookService;
+import java.util.ArrayList;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,25 @@ public class Bitfinex implements Exchange {
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
       throws Exception {
+    String str = "mmm k k";
+    String[] tokens = str.split("!|\\,|\\?|\\.|\\_|\\'|\\@");
+
+    ArrayList<String> result = new ArrayList();
+
+    for (int i = 0; i < tokens.length; i++) {
+      if (!tokens[i].equals(" ")) {
+        result.add(tokens[i]);
+      }
+    }
+    System.out.println(result.size());
+    for (int i = 0; i <result.size() ; i++) {
+      System.out.println(result.get(i));
+    }
+
+
+
     System.out.println("Closed");
+
   }
 
   @Override

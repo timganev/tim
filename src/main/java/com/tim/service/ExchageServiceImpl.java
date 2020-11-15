@@ -15,9 +15,7 @@ public class ExchageServiceImpl implements ExchageService {
   private final String KRAKEN_STREAM_URL = "wss://ws.kraken.com";
   private final String MESSAGE_KRAKEN = "{ \"event\": \"subscribe\",  \"pair\": [\"XBT/USD\"],  \"subscription\": {\"name\": \"book\"} }";
 
-
   public final String BITFINEX_STREAM_URL = "wss://api-pub.bitfinex.com/ws/2";
-
   public final String MESSAGE_BITFINEX = "  { \"event\": \"subscribe\", \"channel\": \"book\", \"symbol\": \"tBTCUSD\"}";
 
 
